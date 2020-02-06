@@ -3,7 +3,6 @@ package com.example.demo.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.demo.R
-import com.example.demo.root.RootView
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -47,6 +46,7 @@ class MainBuilder(dependency: ParentComponent) :
 
     interface ParentComponent {
         // TODO: Define dependencies required from your parent interactor here.
+        fun listener(): MainInteractor.TestListener
     }
 
     @dagger.Module

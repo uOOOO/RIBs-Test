@@ -1,5 +1,7 @@
 package com.example.demo.root
 
+import android.util.Log
+import com.example.demo.main.MainInteractor
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
@@ -33,4 +35,10 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
      * Presenter interface implemented by this RIB's view.
      */
     interface RootPresenter
+
+    class TestListenerImpl : MainInteractor.TestListener {
+        override fun test() {
+            Log.d("TestListenerImpl", "test()")
+        }
+    }
 }

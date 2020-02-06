@@ -15,11 +15,14 @@ class MainInteractor : Interactor<MainInteractor.MainPresenter, MainRouter>() {
 
     @Inject
     lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var testListener: TestListener
 
     override fun didBecomeActive(savedInstanceState: Bundle?) {
         super.didBecomeActive(savedInstanceState)
 
         // TODO: Add attachment logic here (RxSubscriptions, etc.).
+        testListener.test()
     }
 
     override fun willResignActive() {
@@ -32,4 +35,8 @@ class MainInteractor : Interactor<MainInteractor.MainPresenter, MainRouter>() {
      * Presenter interface implemented by this RIB's view.
      */
     interface MainPresenter
+
+    interface TestListener {
+        fun test()
+    }
 }
