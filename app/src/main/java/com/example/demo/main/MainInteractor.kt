@@ -13,30 +13,30 @@ import javax.inject.Inject
 @RibInteractor
 class MainInteractor : Interactor<MainInteractor.MainPresenter, MainRouter>() {
 
-    @Inject
-    lateinit var presenter: MainPresenter
-    @Inject
-    lateinit var testListener: TestListener
+  @Inject
+  lateinit var presenter: MainPresenter
+  @Inject
+  lateinit var testListener: TestListener
 
-    override fun didBecomeActive(savedInstanceState: Bundle?) {
-        super.didBecomeActive(savedInstanceState)
+  override fun didBecomeActive(savedInstanceState: Bundle?) {
+    super.didBecomeActive(savedInstanceState)
 
-        // TODO: Add attachment logic here (RxSubscriptions, etc.).
-        testListener.test()
-    }
+    // TODO: Add attachment logic here (RxSubscriptions, etc.).
+    testListener.test()
+  }
 
-    override fun willResignActive() {
-        super.willResignActive()
+  override fun willResignActive() {
+    super.willResignActive()
 
-        // TODO: Perform any required clean up here, or delete this method entirely if not needed.
-    }
+    // TODO: Perform any required clean up here, or delete this method entirely if not needed.
+  }
 
-    /**
-     * Presenter interface implemented by this RIB's view.
-     */
-    interface MainPresenter
+  /**
+   * Presenter interface implemented by this RIB's view.
+   */
+  interface MainPresenter
 
-    interface TestListener {
-        fun test()
-    }
+  interface TestListener {
+    fun test()
+  }
 }
