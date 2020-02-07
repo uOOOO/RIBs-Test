@@ -30,12 +30,15 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
 
   @Inject
   lateinit var activityCallbackEvent: Observable<ActivityCallbackEvent>
-  
+
   override fun didBecomeActive(savedInstanceState: Bundle?) {
     super.didBecomeActive(savedInstanceState)
 
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
     router.attachMain()
+    activityCallbackEvent.subscribe {
+      Log.d("RootInteractor", "event = ${it.type}")
+    }
   }
 
   override fun willResignActive() {
