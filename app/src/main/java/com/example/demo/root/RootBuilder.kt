@@ -2,14 +2,18 @@ package com.example.demo.root
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import com.example.demo.R
 import com.example.demo.main.MainBuilder
 import com.example.demo.main.MainInteractor
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
+import com.uber.rib.core.lifecycle.ActivityCallbackEvent
+import com.uber.rib.core.lifecycle.ActivityLifecycleEvent
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
+import io.reactivex.Observable
 import javax.inject.Qualifier
 import javax.inject.Scope
 
@@ -46,6 +50,8 @@ class RootBuilder(dependency: ParentComponent) :
 
   interface ParentComponent {
     // TODO: Define dependencies required from your parent interactor here.
+    fun activityLifecycle(): Lifecycle
+    fun activityLifecycleEvent(): Observable<ActivityLifecycleEvent>
   }
 
   @dagger.Module

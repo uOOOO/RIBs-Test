@@ -1,10 +1,13 @@
 package com.example.demo.root
 
 import android.util.Log
+import androidx.lifecycle.Lifecycle
 import com.example.demo.main.MainInteractor
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
+import com.uber.rib.core.lifecycle.ActivityLifecycleEvent
+import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
@@ -17,6 +20,12 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
 
   @Inject
   lateinit var presenter: RootPresenter
+
+  @Inject
+  lateinit var activityLifecycle: Lifecycle
+
+  @Inject
+  lateinit var activityLifecycleEvent: Observable<ActivityLifecycleEvent>
 
   override fun didBecomeActive(savedInstanceState: Bundle?) {
     super.didBecomeActive(savedInstanceState)
