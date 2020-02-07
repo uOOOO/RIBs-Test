@@ -1,5 +1,7 @@
 package com.example.demo.root
 
+import com.example.demo.main.MainBuilder
+import com.example.demo.main.MainInteractor
 import com.uber.rib.core.RibTestBasePlaceholder
 import com.uber.rib.core.RouterHelper
 
@@ -13,6 +15,7 @@ class RootRouterTest : RibTestBasePlaceholder() {
   @Mock internal lateinit var component: RootBuilder.Component
   @Mock internal lateinit var interactor: RootInteractor
   @Mock internal lateinit var view: RootView
+  @Mock internal lateinit var mainBuilder: MainBuilder
 
   private var router: RootRouter? = null
 
@@ -20,7 +23,7 @@ class RootRouterTest : RibTestBasePlaceholder() {
   fun setup() {
     MockitoAnnotations.initMocks(this)
 
-    router = RootRouter(view, interactor, component)
+    router = RootRouter(view, interactor, component, mainBuilder)
   }
 
   /**

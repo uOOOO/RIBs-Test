@@ -12,6 +12,7 @@ class MainInteractorTest : RibTestBasePlaceholder() {
 
   @Mock internal lateinit var presenter: MainInteractor.MainPresenter
   @Mock internal lateinit var router: MainRouter
+  @Mock internal lateinit var testListener: MainInteractor.TestListener
 
   private var interactor: MainInteractor? = null
 
@@ -19,7 +20,7 @@ class MainInteractorTest : RibTestBasePlaceholder() {
   fun setup() {
     MockitoAnnotations.initMocks(this)
 
-    interactor = TestMainInteractor.create(presenter)
+    interactor = TestMainInteractor.create(presenter, testListener)
   }
 
   /**
