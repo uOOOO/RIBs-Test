@@ -52,6 +52,7 @@ class RootBuilder(dependency: ParentComponent) :
     // TODO: Define dependencies required from your parent interactor here.
     fun activityLifecycle(): Lifecycle
     fun activityLifecycleEvent(): Observable<ActivityLifecycleEvent>
+    fun activityCallbackEvent(): Observable<ActivityCallbackEvent>
   }
 
   @dagger.Module

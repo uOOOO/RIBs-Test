@@ -6,6 +6,7 @@ import com.example.demo.main.MainInteractor
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
+import com.uber.rib.core.lifecycle.ActivityCallbackEvent
 import com.uber.rib.core.lifecycle.ActivityLifecycleEvent
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -27,6 +28,9 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
   @Inject
   lateinit var activityLifecycleEvent: Observable<ActivityLifecycleEvent>
 
+  @Inject
+  lateinit var activityCallbackEvent: Observable<ActivityCallbackEvent>
+  
   override fun didBecomeActive(savedInstanceState: Bundle?) {
     super.didBecomeActive(savedInstanceState)
 
