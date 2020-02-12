@@ -1,8 +1,10 @@
 package com.example.demo.root
 
 import android.view.View
+import androidx.core.view.contains
 import com.example.demo.main.MainBuilder
 import com.example.demo.sub.SubBuilder
+import com.example.demo.sub.SubRouter
 
 import com.uber.rib.core.ViewRouter
 
@@ -25,9 +27,29 @@ class RootRouter(
     view.addView(mainRouter.view)
   }
 
+  private var subRouter: SubRouter? = null
+
   fun attachSub() {
-    val subRouter = subBuilder.build(view)
-    attachChild(subRouter)
-    view.addView(subRouter.view)
+    subRouter = subBuilder.build(view).also {
+      attachChild(it)
+      view.addView(it.view)
+    }
+  }
+
+  fun detachSub() {
+    subRouter?.let {
+      detachChild(it)
+      view.removeView(it.view)
+    }
+  }
+
+  override fun handleBackPress(): Boolean {
+    subRouter?.let {
+      if (view.contains(it.view)) {
+        detachSub()
+        return true
+      }
+    }
+    return super.handleBackPress()
   }
 }
