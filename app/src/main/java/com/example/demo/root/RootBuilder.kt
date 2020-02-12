@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import com.example.demo.R
 import com.example.demo.main.MainBuilder
 import com.example.demo.main.MainInteractor
+import com.example.demo.sub.SubBuilder
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import com.uber.rib.core.lifecycle.ActivityCallbackEvent
@@ -51,6 +52,7 @@ class RootBuilder(dependency: ParentComponent) :
   interface ParentComponent {
     // TODO: Define dependencies required from your parent interactor here.
     fun activityLifecycle(): Lifecycle
+
     fun activityLifecycleEvent(): Observable<ActivityLifecycleEvent>
     fun activityCallbackEvent(): Observable<ActivityCallbackEvent>
   }
@@ -68,8 +70,8 @@ class RootBuilder(dependency: ParentComponent) :
       @RootScope
       @Provides
       @JvmStatic
-      internal fun testListener(): MainInteractor.TestListener {
-        return RootInteractor.TestListenerImpl()
+      internal fun mainViewListener(interactor: RootInteractor): MainInteractor.MainViewListener {
+        return interactor.MainViewListenerImpl()
       }
 
       @RootScope
@@ -80,7 +82,8 @@ class RootBuilder(dependency: ParentComponent) :
           view: RootView,
           interactor: RootInteractor
       ): RootRouter {
-        return RootRouter(view, interactor, component, MainBuilder(component))
+        return RootRouter(view, interactor, component, MainBuilder(component),
+            SubBuilder(component))
       }
     }
 
@@ -93,7 +96,7 @@ class RootBuilder(dependency: ParentComponent) :
       dependencies = [ParentComponent::class]
   )
   interface Component : InteractorBaseComponent<RootInteractor>, BuilderComponent,
-      MainBuilder.ParentComponent {
+      MainBuilder.ParentComponent, SubBuilder.ParentComponent {
 
     @dagger.Component.Builder
     interface Builder {

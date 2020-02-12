@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.demo.main.MainView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.demo.sub.SubView xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/root"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorAccent">
+  android:background="@color/colorPrimary">
 
   <Button
     android:id="@+id/button"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:text="MAIN CLICK" />
-</com.example.demo.main.MainView>
+    android:text="SUB CLICK" />
+</com.example.demo.sub.SubView>

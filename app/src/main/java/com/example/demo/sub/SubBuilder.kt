@@ -1,4 +1,4 @@
-package com.example.demo.main
+package com.example.demo.sub
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,85 +8,83 @@ import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy.CLASS
 import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
- * Builder for the {@link MainScope}.
+ * Builder for the {@link SubScope}.
  *
  * TODO describe this scope's responsibility as a whole.
  */
-class MainBuilder(dependency: ParentComponent) :
-    ViewBuilder<MainView, MainRouter, MainBuilder.ParentComponent>(dependency) {
+class SubBuilder(dependency: ParentComponent) :
+    ViewBuilder<SubView, SubRouter, SubBuilder.ParentComponent>(dependency) {
 
   /**
-   * Builds a new [MainRouter].
+   * Builds a new [SubRouter].
    *
    * @param parentViewGroup parent view group that this router's view will be added to.
-   * @return a new [MainRouter].
+   * @return a new [SubRouter].
    */
-  fun build(parentViewGroup: ViewGroup): MainRouter {
+  fun build(parentViewGroup: ViewGroup): SubRouter {
     val view = createView(parentViewGroup)
-    val interactor = MainInteractor()
-    val component = DaggerMainBuilder_Component.builder()
+    val interactor = SubInteractor()
+    val component = DaggerSubBuilder_Component.builder()
         .parentComponent(dependency)
         .view(view)
         .interactor(interactor)
         .build()
-    return component.mainRouter()
+    return component.subRouter()
   }
 
-  override fun inflateView(inflater: LayoutInflater, parentViewGroup: ViewGroup): MainView? {
+  override fun inflateView(inflater: LayoutInflater, parentViewGroup: ViewGroup): SubView? {
     // TODO: Inflate a new view using the provided inflater, or create a new view programatically using the
     // provided context from the parentViewGroup.
-    return inflater.inflate(R.layout.main_rib, parentViewGroup, false) as MainView?
+    return inflater.inflate(R.layout.sub_rib, parentViewGroup, false) as SubView?
   }
 
   interface ParentComponent {
     // TODO: Define dependencies required from your parent interactor here.
-    fun listener(): MainInteractor.MainViewListener
   }
 
   @dagger.Module
   abstract class Module {
 
-    @MainScope
+    @SubScope
     @Binds
-    internal abstract fun presenter(view: MainView): MainInteractor.MainPresenter
+    internal abstract fun presenter(view: SubView): SubInteractor.SubPresenter
 
     @dagger.Module
     companion object {
 
-      @MainScope
+      @SubScope
       @Provides
       @JvmStatic
       internal fun router(
           component: Component,
-          view: MainView,
-          interactor: MainInteractor
-      ): MainRouter {
-        return MainRouter(view, interactor, component)
+          view: SubView,
+          interactor: SubInteractor): SubRouter {
+        return SubRouter(view, interactor, component)
       }
     }
 
     // TODO: Create provider methods for dependencies created by this Rib. These should be static.
   }
 
-  @MainScope
-  @dagger.Component(
-      modules = [Module::class],
-      dependencies = [ParentComponent::class]
-  )
-  interface Component : InteractorBaseComponent<MainInteractor>, BuilderComponent {
+  @SubScope
+  @dagger.Component(modules = arrayOf(Module::class),
+      dependencies = arrayOf(ParentComponent::class))
+  interface Component : InteractorBaseComponent<SubInteractor>, BuilderComponent {
 
     @dagger.Component.Builder
     interface Builder {
 
       @BindsInstance
-      fun interactor(interactor: MainInteractor): Builder
+      fun interactor(interactor: SubInteractor): Builder
 
       @BindsInstance
-      fun view(view: MainView): Builder
+      fun view(view: SubView): Builder
 
       fun parentComponent(component: ParentComponent): Builder
       fun build(): Component
@@ -94,14 +92,14 @@ class MainBuilder(dependency: ParentComponent) :
   }
 
   interface BuilderComponent {
-    fun mainRouter(): MainRouter
+    fun subRouter(): SubRouter
   }
 
   @Scope
-  @kotlin.annotation.Retention(AnnotationRetention.BINARY)
-  internal annotation class MainScope
+  @Retention(CLASS)
+  internal annotation class SubScope
 
   @Qualifier
-  @kotlin.annotation.Retention(AnnotationRetention.BINARY)
-  internal annotation class MainInternal
+  @Retention(CLASS)
+  internal annotation class SubInternal
 }

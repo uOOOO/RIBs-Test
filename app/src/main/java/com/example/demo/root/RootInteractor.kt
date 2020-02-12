@@ -9,6 +9,7 @@ import com.uber.rib.core.RibInteractor
 import com.uber.rib.core.lifecycle.ActivityCallbackEvent
 import com.uber.rib.core.lifecycle.ActivityLifecycleEvent
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
@@ -31,20 +32,25 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
   @Inject
   lateinit var activityCallbackEvent: Observable<ActivityCallbackEvent>
 
+  private val disposeBag = CompositeDisposable()
+
   override fun didBecomeActive(savedInstanceState: Bundle?) {
     super.didBecomeActive(savedInstanceState)
 
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
     router.attachMain()
-    activityCallbackEvent.subscribe {
-      Log.d("RootInteractor", "event = ${it.type}")
-    }
+    disposeBag.add(
+        activityCallbackEvent.subscribe {
+          Log.d("RootInteractor", "event = ${it.type}")
+        }
+    )
   }
 
   override fun willResignActive() {
     super.willResignActive()
 
     // TODO: Perform any required clean up here, or delete this method entirely if not needed.
+    disposeBag.clear()
   }
 
   /**
@@ -52,9 +58,10 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
    */
   interface RootPresenter
 
-  class TestListenerImpl : MainInteractor.TestListener {
-    override fun test() {
-      Log.d("TestListenerImpl", "test()")
+  inner class MainViewListenerImpl : MainInteractor.MainViewListener {
+    override fun showSubView() {
+      Log.d("MainViewListenerImpl", "showSubView()")
+      router.attachSub()
     }
   }
 }

@@ -8,6 +8,8 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.example.demo.AnotherActivity
+import com.jakewharton.rxbinding3.view.clicks
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.main_rib.view.*
 
 
@@ -22,10 +24,14 @@ class MainView @JvmOverloads constructor(
 
   override fun onFinishInflate() {
     super.onFinishInflate()
-    button.setOnClickListener {
-      button.text = "CLICKED!!!"
-      (context as Activity).startActivityForResult(Intent(context, AnotherActivity::class.java), 0)
-    }
+//    button.setOnClickListener {
+//      button.text = "CLICKED!!!"
+//      (context as Activity).startActivityForResult(Intent(context, AnotherActivity::class.java), 0)
+//    }
+  }
+
+  override fun showSubView(): Observable<Unit> {
+    return button.clicks()
   }
 
   override fun onSaveInstanceState(): Parcelable? {

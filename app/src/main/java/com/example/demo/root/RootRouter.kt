@@ -2,6 +2,7 @@ package com.example.demo.root
 
 import android.view.View
 import com.example.demo.main.MainBuilder
+import com.example.demo.sub.SubBuilder
 
 import com.uber.rib.core.ViewRouter
 
@@ -14,12 +15,19 @@ class RootRouter(
     view: RootView,
     interactor: RootInteractor,
     component: RootBuilder.Component,
-    private val mainBuilder: MainBuilder
+    private val mainBuilder: MainBuilder,
+    private val subBuilder: SubBuilder
 ) : ViewRouter<RootView, RootInteractor, RootBuilder.Component>(view, interactor, component) {
 
   fun attachMain() {
     val mainRouter = mainBuilder.build(view)
     attachChild(mainRouter)
     view.addView(mainRouter.view)
+  }
+
+  fun attachSub() {
+    val subRouter = subBuilder.build(view)
+    attachChild(subRouter)
+    view.addView(subRouter.view)
   }
 }

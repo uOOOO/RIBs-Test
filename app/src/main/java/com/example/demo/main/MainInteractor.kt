@@ -3,6 +3,8 @@ package com.example.demo.main
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
@@ -16,27 +18,35 @@ class MainInteractor : Interactor<MainInteractor.MainPresenter, MainRouter>() {
   @Inject
   lateinit var presenter: MainPresenter
   @Inject
-  lateinit var testListener: TestListener
+  lateinit var mainViewListener: MainViewListener
+
+  private val disposeBag = CompositeDisposable()
 
   override fun didBecomeActive(savedInstanceState: Bundle?) {
     super.didBecomeActive(savedInstanceState)
 
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
-    testListener.test()
+    disposeBag.add(
+        presenter.showSubView()
+            .subscribe { mainViewListener.showSubView() }
+    )
   }
 
   override fun willResignActive() {
     super.willResignActive()
 
     // TODO: Perform any required clean up here, or delete this method entirely if not needed.
+    disposeBag.clear()
   }
 
   /**
    * Presenter interface implemented by this RIB's view.
    */
-  interface MainPresenter
+  interface MainPresenter {
+    fun showSubView(): Observable<Unit>
+  }
 
-  interface TestListener {
-    fun test()
+  interface MainViewListener {
+    fun showSubView()
   }
 }
