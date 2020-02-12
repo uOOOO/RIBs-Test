@@ -1,2 +1,3 @@
 include ':app'
+include ':ribs-screenstack'
 rootProject.name = "RIBs Test"

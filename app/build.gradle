@@ -56,4 +56,6 @@ dependencies {
 //    kapt 'com.google.dagger:dagger-android-processor:2.24'
 
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
+
+    implementation project(':ribs-screenstack')
 }

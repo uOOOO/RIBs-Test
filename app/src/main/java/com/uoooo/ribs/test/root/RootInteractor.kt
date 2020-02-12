@@ -1,13 +1,17 @@
 package com.uoooo.ribs.test.root
 
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import com.bangarharshit.ribsscreenstack.ScreenStack
 import com.uoooo.ribs.test.main.MainInteractor
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
 import com.uber.rib.core.lifecycle.ActivityCallbackEvent
 import com.uber.rib.core.lifecycle.ActivityLifecycleEvent
+import com.uber.rib.core.screenstack.ViewProvider
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -19,6 +23,10 @@ import javax.inject.Inject
  */
 @RibInteractor
 class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
+
+  companion object {
+    val TAG = RootInteractor::class.java.simpleName
+  }
 
   @Inject
   lateinit var presenter: RootPresenter
@@ -40,9 +48,9 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
     router.attachMain()
     disposeBag.add(
-        activityCallbackEvent.subscribe {
-          Log.d("RootInteractor", "event = ${it.type}")
-        }
+      activityCallbackEvent.subscribe {
+        Log.d(TAG, "event = ${it.type}")
+      }
     )
   }
 

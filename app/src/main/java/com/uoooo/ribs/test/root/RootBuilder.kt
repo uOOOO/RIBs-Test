@@ -3,6 +3,9 @@ package com.uoooo.ribs.test.root
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import com.bangarharshit.ribsscreenstack.ScreenStack
+import com.bangarharshit.ribsscreenstack.transition.DefaultTransition
+import com.bangarharshit.ribsscreenstack.transition.Transition
 import com.uoooo.ribs.test.main.MainBuilder
 import com.uoooo.ribs.test.main.MainInteractor
 import com.uoooo.ribs.test.sub.SubBuilder
@@ -15,6 +18,7 @@ import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
 import io.reactivex.Observable
+import javax.inject.Provider
 import javax.inject.Qualifier
 import javax.inject.Scope
 
@@ -80,10 +84,19 @@ class RootBuilder(dependency: ParentComponent) :
       internal fun router(
           component: Component,
           view: RootView,
-          interactor: RootInteractor
+          interactor: RootInteractor,
+          screenStack: ScreenStack
       ): RootRouter {
-        return RootRouter(view, interactor, component, MainBuilder(component),
+        return RootRouter(view, interactor, component, screenStack, MainBuilder(component),
             SubBuilder(component))
+      }
+
+      @RootScope
+      @Provides
+      @JvmStatic
+      internal fun screenStack(view: RootView): ScreenStack {
+        return ScreenStack(view,
+            Provider<Transition> { DefaultTransition(DefaultTransition.NavigationType.SHOW) })
       }
     }
 
