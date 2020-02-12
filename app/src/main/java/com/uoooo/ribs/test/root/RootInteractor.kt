@@ -53,6 +53,14 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
     disposeBag.clear()
   }
 
+  override fun handleBackPress(): Boolean {
+    if (router.view.isSubViewOnTop()) {
+      router.detachSub()
+      return true
+    }
+    return super.handleBackPress()
+  }
+
   /**
    * Presenter interface implemented by this RIB's view.
    */

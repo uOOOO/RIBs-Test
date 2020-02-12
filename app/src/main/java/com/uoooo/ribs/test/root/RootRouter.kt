@@ -41,14 +41,4 @@ class RootRouter(
       view.removeView(it.view)
     }
   }
-
-  override fun handleBackPress(): Boolean {
-    subRouter?.let {
-      if (view.contains(it.view)) {
-        detachSub()
-        return true
-      }
-    }
-    return super.handleBackPress()
-  }
 }
