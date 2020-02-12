@@ -66,7 +66,7 @@ class RootRouter(
     })
   }
 
-  private fun popStack(): Boolean {
+  fun popStack(): Boolean {
     return (screenStack.size() > 0).also {
       screenStack.popScreen()
     }

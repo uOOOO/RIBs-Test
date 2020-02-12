@@ -62,8 +62,8 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
   }
 
   override fun handleBackPress(): Boolean {
-    if (router.view.isSubViewOnTop()) {
-      router.detachSub()
+    Log.d(RootRouter.TAG, "handleBackPress")
+    if (router.popStack()) {
       return true
     }
     return super.handleBackPress()
