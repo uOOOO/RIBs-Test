@@ -53,8 +53,7 @@ class RootActivity : RibActivity() {
     model.data.observe(this, Observer {
       Log.d(TAG, "value = $it")
     })
-    Log.d(TAG, "model = $model")
-    Log.d(TAG, "model KEY_A = ${model.get()}")
+    Log.d(TAG, "model = $model, ${model.get()}")
     model.data.postValue(model.data.value?.plus(1))
   }
 
@@ -64,23 +63,21 @@ class RootActivity : RibActivity() {
   }
 
   @Parcelize
-  class TestData : Parcelable {
-
-    var data: String? = null
-  }
+  data class TestData(val data: String) : Parcelable
 
   class TestViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     companion object {
       val TAG = TestViewModel::class.java.simpleName
+      const val KEY_DATA = "key_data"
     }
 
     val data = MutableLiveData(0)
 
     fun set() {
-      savedStateHandle.set("KEY_A", arrayListOf(TestData()))
+      savedStateHandle.set(KEY_DATA, arrayListOf(TestData("data")))
     }
 
-    fun get(): List<TestData>? = savedStateHandle.get<List<TestData>>("KEY_A")
+    fun get(): List<TestData>? = savedStateHandle.get<List<TestData>>(KEY_DATA)
 
     override fun onCleared() {
       super.onCleared()
