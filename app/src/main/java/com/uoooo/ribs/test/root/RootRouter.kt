@@ -13,11 +13,11 @@ import com.uber.rib.core.ViewRouter
  * TODO describe the possible child configurations of this scope.
  */
 class RootRouter(
-    view: RootView,
-    interactor: RootInteractor,
-    component: RootBuilder.Component,
-    private val mainBuilder: MainBuilder,
-    private val subBuilder: SubBuilder
+  view: RootView,
+  interactor: RootInteractor,
+  component: RootBuilder.Component,
+  private val mainBuilder: MainBuilder,
+  private val subBuilder: SubBuilder
 ) : ViewRouter<RootView, RootInteractor, RootBuilder.Component>(view, interactor, component) {
 
   fun attachMain() {
@@ -36,9 +36,10 @@ class RootRouter(
   }
 
   fun detachSub() {
-    subRouter?.let {
+    subRouter = subRouter?.let {
       detachChild(it)
       view.removeView(it.view)
+      return@let null
     }
   }
 }
