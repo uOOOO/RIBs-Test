@@ -42,6 +42,10 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
     disposeBag.add(
         activityCallbackEvent.subscribe {
           Log.d("RootInteractor", "event = ${it.type}")
+          if (it.type == ActivityCallbackEvent.Type.ACTIVITY_RESULT) {
+            val result = it as ActivityCallbackEvent.ActivityResult
+            Log.d("RootInteractor", "event = ${it.data}, ${it.requestCode}, ${it.resultCode}")
+          }
         }
     )
   }

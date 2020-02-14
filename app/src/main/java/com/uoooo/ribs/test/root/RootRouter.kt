@@ -6,6 +6,10 @@ import com.uoooo.ribs.test.sub.SubBuilder
 import com.uoooo.ribs.test.sub.SubRouter
 
 import com.uber.rib.core.ViewRouter
+import com.uoooo.ribs.test.main.MainRouter
+import com.uoooo.ribs.test.transition.DefaultTransition
+import com.uoooo.ribs.test.transition.Transition
+import com.uoooo.ribs.test.transition.Views
 
 /**
  * Adds and removes children of {@link RootBuilder.RootScope}.
@@ -20,25 +24,36 @@ class RootRouter(
   private val subBuilder: SubBuilder
 ) : ViewRouter<RootView, RootInteractor, RootBuilder.Component>(view, interactor, component) {
 
-  fun attachMain() {
-    val mainRouter = mainBuilder.build(view)
-    attachChild(mainRouter)
-    view.addView(mainRouter.view)
-  }
-
+  private var mainRouter: MainRouter? = null
   private var subRouter: SubRouter? = null
+
+  fun attachMain() {
+    mainRouter = mainBuilder.build(view).also {
+      attachChild(it)
+      view.addView(it.view)
+    }
+  }
 
   fun attachSub() {
     subRouter = subBuilder.build(view).also {
       attachChild(it)
       view.addView(it.view)
+      Views.whenMeasured(it.view, Views.OnMeasured {
+        DefaultTransition(DefaultTransition.NavigationType.TYPE_A).animate(mainRouter?.view, it.view, Transition.Direction.FORWARD, null)
+      })
     }
   }
 
   fun detachSub() {
     subRouter = subRouter?.let {
       detachChild(it)
-      view.removeView(it.view)
+      Views.whenMeasured(it.view, Views.OnMeasured {
+        DefaultTransition(DefaultTransition.NavigationType.TYPE_A).animate(it.view, mainRouter?.view, Transition.Direction.BACKWARD, object : Transition.Callback {
+          override fun onAnimationEnd() {
+            view.removeView(it.view)
+          }
+        })
+      })
       return@let null
     }
   }
